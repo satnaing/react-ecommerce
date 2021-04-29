@@ -5,15 +5,18 @@ import Card3 from "../../components/Card/Card3";
 import Card5 from "../../components/Card/Card5";
 import TestiSlider from "../../components/TestiSlider/TestiSlider";
 import { default as featuredItems } from "../../Items";
-import { useState } from "react";
+import { FC, useState } from "react";
 import HeroSection from "../../components/HeroSection/HeroSection";
+
+import { connect } from "react-redux";
 
 // image import
 import bg1 from "../../assets/bg-img/banner_minipage1.jpg";
 import bg2 from "../../assets/bg-img/banner_minipage2.jpg";
 import bg3 from "../../assets/bg-img/banner_minipage3.jpg";
+import { addItem } from "../../redux/actions/itemActions";
 
-const Home = () => {
+const Home: FC<any> = ({ addToCart }) => {
   const [totalItems, setTotalItems] = useState(10);
 
   const currentItems = featuredItems.slice(0, totalItems);
@@ -110,6 +113,7 @@ const Home = () => {
               imgSrc2={item.img2}
               itemName={item.name}
               itemPrice={item.price}
+              onClick={() => addToCart(item.name)}
             />
           ))}
         </div>
@@ -120,6 +124,9 @@ const Home = () => {
           <Button value="See More" />
         </span>
       </section>
+
+      {/* Test Button */}
+      {/* <button onClick={addToCart("hello world")}>Click Me</button> */}
 
       <div className="border-gray100 border-b-2"></div>
 
@@ -143,4 +150,11 @@ const Home = () => {
     </div>
   );
 };
-export default Home;
+
+const mapDispatchToProps = (dispatch: any) => {
+  return {
+    addToCart: (item: string) => dispatch(addItem(item)),
+  };
+};
+
+export default connect(null, mapDispatchToProps)(Home);
